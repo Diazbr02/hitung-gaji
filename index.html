@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Penghitung Gaji Karyawan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+            background-color: #f4f4f4;
+        }
+
+        .main-wrapper {
+            display: flex;
+            width: 800px;
+            background-color: white;
+            border: 1px solid #000;
+        }
+
+        .box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box-left {
+            border-right: 1px solid #000;
+        }
+
+        .header-title {
+            text-align: center;
+            border-bottom: 1px solid #000;
+            margin: 0;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #fff;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            border: 1px solid #999;
+            font-weight: bold;
+        }
+
+        .res-row {
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .total-gaji {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="box box-left">
+            <h2 class="header-title">INPUTAN</h2>
+            <div class="content">
+                <h3>Hitung Gaji Karyawan</h3>
+                
+                <div class="form-group">
+                    <label>Gaji Pokok (Rp):</label>
+                    <input type="number" id="inpGapok" value="5000000">
+                </div>
+
+                <div class="form-group">
+                    <label>Jumlah Jam Lembur:</label>
+                    <input type="number" id="inpLembur" value="20">
+                </div>
+
+                <button onclick="prosesGaji()">Hitung Gaji</button>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2 class="header-title">OUTPUT</h2>
+            <div class="content">
+                <div class="res-row">Gaji Pokok: <span id="outGapok">Rp 0</span></div>
+                <div class="res-row">Total Gaji Lembur: <span id="outLembur">Rp 0</span></div>
+                <div class="res-row">Gaji Kotor: <span id="outKotor">Rp 0</span></div>
+                <div class="res-row">Pajak: <span id="outPajak">Rp 0</span></div>
+                
+                <div class="total-gaji">
+                    Gaji Bersih: <span id="outBersih">Rp 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function prosesGaji() {
+            const gapok = parseFloat(document.getElementById('inpGapok').value) || 0;
+            const jam = parseFloat(document.getElementById('inpLembur').value) || 0;
+
+            const upahLembur = jam * 20000;
+            const gajiKotor = gapok + upahLembur;
+
+            let ratePajak = 0;
+            if (gajiKotor < 5000000) {
+                ratePajak = 0.05;
+            } else if (gajiKotor >= 5000000 && gajiKotor <= 10000000) {
+                ratePajak = 0.10;
+            } else {
+                ratePajak = 0.15;
+            }
+
+            const pajak = gajiKotor * ratePajak;
+            const gajiBersih = gajiKotor - pajak;
+
+            const formatIDR = (num) => "Rp " + num.toLocaleString('id-ID');
+
+            document.getElementById('outGapok').innerText = formatIDR(gapok);
+            document.getElementById('outLembur').innerText = formatIDR(upahLembur);
+            document.getElementById('outKotor').innerText = formatIDR(gajiKotor);
+            document.getElementById('outPajak').innerText = formatIDR(pajak);
+            document.getElementById('outBersih').innerText = formatIDR(gajiBersih);
+        }
+
+        window.onload = prosesGaji;
+    </script>
+</body>
+</html>
